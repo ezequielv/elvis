@@ -36,10 +36,6 @@ static GUI *allguis[] =
 	&guix11,
 #endif
 
-#ifdef GUI_GNOME
-  &guignome,
-#endif
-
 #ifdef GUI_PM
 	&guipm,
 #endif
@@ -920,6 +916,7 @@ int main(argc, argv)
 	char	**argv;	/* values of the command-line arguments */
 {
 	init(argc, argv);
+	exstring(windefault, toCHAR("window 1"), NULL);
 	(*gui->loop)();
 	term();
 #if !defined (GUI_WIN32)

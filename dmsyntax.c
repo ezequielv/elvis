@@ -138,6 +138,7 @@ static spell_t *scankeyword(refp, colplusone, indent)
 {
 	spell_t *node;
 	spell_t *nnode = NULL;	/* node for normal colplusone anchor */
+	CHAR    *rrefp;		/* reference for normal colplusone anchor */
 	int	anchor;
 
 	/* look it up, being careful about case sensitivity */
@@ -173,6 +174,7 @@ static spell_t *scankeyword(refp, colplusone, indent)
 					if (anchor == colplusone)
 					{
 						nnode = node;	/* keep node for normal anchor in mind... */
+						rrefp = *refp;
 						goto Continue;	/* ...but continue searching for... */
 					}
 					/* ...an alternative one which is preferred */
@@ -194,7 +196,11 @@ Continue:
 		else
 			node = spellletter(node, **refp);
 	}
-	if (!SPELL_IS_GOOD(node)) node = nnode;	/* no node for alternative anchor, try normal one */
+	if (!SPELL_IS_GOOD(node) && nnode)	/* no node for alternative anchor, try normal one */
+	{
+		node = nnode;
+		*refp = rrefp;
+	}
 	if (!SPELL_IS_GOOD(node))
 		return NULL;
 
@@ -497,6 +503,7 @@ static DMINFO *init(win)
 			str = OSINCLUDEPATH;
 #endif
 		optpreset(o_includepath, toCHAR(str), OPT_HIDE);
+		optinsert("glob", QTY(globdesc), globdesc, globval);
 
 		/* locate the default fonts */
 		cfont[COMMENT] =
@@ -1351,6 +1358,9 @@ static MARK image(w, line, info, draw)
 			if (sinfo->token == PUNCT
 			 && (kp = scankeyword(&up, col + 1, indent)) != NULL)
 			{
+				/* indentation ends */
+				indent = ElvFalse;
+
 				/* It's a keyword.  Is it a comment keyword? */
 				if (wordcomment(kp))
 				{
@@ -1494,7 +1504,7 @@ static MARK image(w, line, info, draw)
 			{
 				sinfo->token = PREPWORD;
 			}
-			else if (sinfo->token == PREPWORD && !elvalnum(*cp))
+			else if (sinfo->token == PREPWORD && !elvalnum(*cp) && *cp != '_')
 			{
 				sinfo->token = PUNCT;
 				expectprepq = ElvTrue;

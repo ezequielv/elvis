@@ -114,8 +114,8 @@ static char	*SE;		/* :se=: standout end */
 static char	*US;		/* :us=: underline start */
 static char	*UE;		/* :ue=: underline end */
 static char	*MD;		/* :md=: bold start */
-static char	*ME;		/* :me=: bold end */
-static char	*MH;		/* :mh=: half-bright start (end with :me=:) */
+static char	*ME;		/* :me=: bold and half-bright end */
+static char	*MH;		/* :mh=: half-bright start */
 static char	*CM;		/* :cm=: cursor movement */
 static char	*DO;		/* :do=: move down one line */
 static char	*DOmany;	/* :DO=: move down many lines */
@@ -321,8 +321,8 @@ static void change(fg, bg, bits)
 		return;
 
 	/* If foreground is set to a bright color, then we want to convert it
-	 * to either a dim color + bold (if bold wasn't set already), or to
-	 * white + bold (if bold was already set).
+	 * to either white + bold (if bold was already set), or
+	 * to a dim color + bold (if bold wasn't set already).
 	 */
 	if (fgcolored && fg >= 10)
 	{
@@ -332,6 +332,10 @@ static void change(fg, bg, bits)
 			fg -= 10, bits |= COLOR_BOLD;
 	}
 
+	/* Italic is disabled if "nottyitalic" */
+	if (!o_ttyitalic)
+		bits &= ~COLOR_ITALIC;
+
 	/* Italics are shown via underlining, if there is no :mh=: string */
 	if (!MH && (bits & COLOR_ITALIC))
 		bits = (bits & ~COLOR_ITALIC) | COLOR_UNDERLINED;
@@ -340,10 +344,6 @@ static void change(fg, bg, bits)
 	/* If "nottyitalic", then never use underline ever */
 	if (!o_ttyunderline && (!o_ttyitalic || bgcolored))
 		bits &= ~COLOR_UNDERLINED;
-
-	/* Italic is disabled if "nottyitalic" */
-	if (!o_ttyitalic)
-		bits &= ~COLOR_ITALIC;
 
 	/* Termcap doesn't allow bold & italics to mix.  If attempting to mix,
 	 * then use plain bold.
@@ -451,9 +451,13 @@ void ttysuspend()
 	if (KE) tputs(KE, 1, ttych);	/* restore keypad mode */
 	if (RC) tputs(RC, 1, ttych);	/* restore cursor & attributes */
 
-	/* Move the cursor to the bottom of the screen */
-	tputs(tgoto(CM, 0, (int)o_ttyrows - 1), 0, ttych);
-	ttych('\n');
+	/* no cursor movement for terminals with te capability */
+	if (!TE)
+	{
+		/* Move the cursor to the bottom of the screen */
+		tputs(tgoto(CM, 0, (int)o_ttyrows - 1), 0, ttych);
+		ttych('\n');
+	}
 	ttyflush();
 
 	/* change the terminal mode back the way it was */
@@ -609,7 +613,7 @@ static char *manynames(names)
 static void starttcap()
 {
 	static char	cbmem[800];
-	char		*str;
+	char		*str = NULL;
 	int		i;
 
 	/* make sure TERM variable is set */

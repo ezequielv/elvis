@@ -336,7 +336,7 @@ each command on a separate following  line, and then '}' on a line by itself to 
 the end of the ex command list.
 
 <dt>lhs
-<dd>This is string of characters.
+<dd>This is a string of characters.
 If whitespace characters are to be included in it, then they must be
 quoted by embedding a <kbd>^V</kbd> character before them.
 
@@ -633,7 +633,7 @@ you can then follow hypertext links to the actual location in the manual.
 | range | <a href="#move">m[ove]</a>            | line                              |
 | range | <a href="#to">t[o]</a>              | line                              |
 | range | <a href="#BANG">!</a>                 | shellcmd                          |
-| range | <a href="#GT">&gt;</a>                 |                                   |
+| range | <a href="#GT">&gt;</a>[!]              |                                   |
 | range | <a href="#LT">&lt;</a>                 |                                   |
 | range | <a href="#join">j[oin]</a>[!]         |                                   |
 |       | <a href="#undo">u[ndo]</a>            | [count]                           |
@@ -726,7 +726,7 @@ to execute an interactive program you should use the <a href="#shell">:shell</a>
 command.
 
 <dt><var>range</var> <a name="LT">&lt;</a>
-<br><var>range</var> <a name="GT">&gt;</a>
+<br><var>range</var> <a name="GT">&gt;</a><code>[</code>!<code>]</code>
 <dd>The <code>:&lt;</code> and <code>:&gt;</code> commands adjust the indentation on the
 addressed lines.
 The <code>:&lt;</code> command decreases the leading whitespace by the number of
@@ -1285,7 +1285,7 @@ You may want to check the value of the
 The <code>:@</code> command executes the contents of a cut buffer as a series
 of ex command lines.
 
-<dt><a name="source">so[urce]</a><code>[</code>!<code>]</code> <var>file</var> <code>|</code> !<var>shellcmd
+<dt><a name="source">so[urce]</a><code>[</code>!<code>]</code> <var>file</var> <code>|</code> !<var>shellcmd</var>
 <dd>
 The <code>:source</code> command reads a file, and executes its contents as a
 series of ex commands.
@@ -1454,8 +1454,8 @@ of a given buffer, so that's where the cursor is moved to.
 For more information, see the discussion of <a href="#BUFFERID">Buffer IDs</a>
 earlier in this chapter (in the discussion of addresses).
 
-<dt><a name="bbrowse">bb[rowse]</a>
-<br><a name="sbbrowse">sbb[rowse]</a>
+<dt><a name="bbrowse">bb[rowse]</a><code>[</code>!<code>]</code>
+<br><a name="sbbrowse">sbb[rowse]</a><code>[</code>!<code>]</code>
 <dd>
 The <code>:bbrowse</code> and <code>:sbbrowse</code> commands create an HTML document
 which lists the names of all user buffers (or, when a '!' is appended to the
@@ -1480,7 +1480,7 @@ window to display it.
 |       | <a href="#srewind">sre[wind]</a>         |                                   |
 |       | <a href="#slast">sl[ast]</a>           |                                   |
 |       | <a href="#stag">sta[g]</a>            | [tag]                             |
-|       | <a href="#sbrowse">sb[rowse]</a>         | restrictions                      |
+|       | <a href="#sbrowse">sbr[owse]</a>         | restrictions                      |
 |       | <a href="#sall">sa[ll]</a>            |                                   |
 |       | <a href="#window">wi[ndow]</a>          | [ +[+] | -[-] | number | buffer]  |
 |       | <a href="#display">di[splay]</a>         | [modename [language]]             |
@@ -1516,7 +1516,7 @@ Close all windows except the current one.
 <br><a name="srewind">sre[wind]</a><code>[</code>!<code>]</code>
 <br><a name="slast">sl[ast]</a>
 <br><a name="stag">sta[g]</a> <code>[</code><var>tag</var><code>]</code>
-<br><a name="sbrowse">sb[rowse]</a> <var>restrictions</var>
+<br><a name="sbrowse">sbr[owse]</a> <var>restrictions</var>
 <dd>
 The <code>:snext, :sNext, :srewind, :slast, :stag, </code> and <code>:sbrowse</code>
 commands resemble the
@@ -1585,7 +1585,7 @@ the file name's extension.
 |       | <a href="#set">se[t]</a>[!]          | [option=value | option? | all]    |
 |       | <a href="#local">lo[cal]</a>           | [option=value | option ]          |
 |       | <a href="#let">le[t]</a>[!]          | option=expr                       |
-|       | <a href="#alias">al[ias]</a>[!]        | [name [excmds]]                   |
+|       | <a href="#alias">ali[as]</a>[!]        | [name [excmds]]                   |
 |       | <a href="#unalias">unal[ias]</a>[!]      | name                              |
 |       | <a href="#if">if</a>                | expr                              |
 |       | <a href="#then">th[en]</a>            | excmds                            |
@@ -1762,30 +1762,30 @@ These are:
 |In all display modes and all user interfaces...                   |
 | normal     | --           | default when window has input focus  |
 | idle       | normal       | default when window loses input focus|
-| bottom     | --           | ex commands at the bottom of a window|
+| bottom     | normal       | ex commands at the bottom of a window|
 | lnum       | (normal/idle)| line numbers for <a href="elvisopt.html#number">:set number</a>         |
 | showmode   | (normal/idle)| input mode name for <a href="elvisopt.html#showmode">:set showmode</a>    |
 | ruler      | (normal/idle)| line/column numbers for <a href="elvisopt.html#number">:set ruler</a>   |
-| selection  | --           | selected text for <a href="elvisvi.html#v">v, V, and ^V</a> cmds  |
-| hlsearch   | --           | matching text for the <a href="elvisopt.html#hlsearch">hlsearch</a> option|
-| hlobject<var>n</var>  | --           | highlighting via <a href="elvisopt.html#hlobject">hlobject</a> &amp; <a href="elvisopt.html#hllayers">hllayers</a> |
-| spell      | --           | highlighting via <a href="elvistip.html">spell-checking</a>      |
-| fold       | --           | regions folded via the <a href="#fold">:fold</a> command |
-| header     | --           | page headers if <a href="elvisopt.html#lpheader">lpheader</a> is set      |
+| selection  | (normal/idle)| selected text for <a href="elvisvi.html#v">v, V, and ^V</a> cmds  |
+| hlsearch   | (normal/idle)| matching text for the <a href="elvisopt.html#hlsearch">hlsearch</a> option|
+| hlobject<var>n</var>  | (normal/idle)| highlighting via <a href="elvisopt.html#hlobject">hlobject</a> &amp; <a href="elvisopt.html#hllayers">hllayers</a> |
+| spell      | (normal/idle)| highlighting via <a href="#SPELL">spell-checking</a>      |
+| fold       | (normal/idle)| regions folded via the <a href="#fold">:fold</a> command |
+| header     | (normal)     | page headers if <a href="elvisopt.html#lpheader">lpheader</a> is set      |
 |------------^--------------^--------------------------------------|
 |In the "syntax" display modes...                                  |
 | comment    | (normal/idle)| comments                             |
 | string     | (normal/idle)| string literals                      |
 | char       | string       | character literals                   |
 | regexp     | string       | regular expression literals          |
-| regsub     | regsub       | substitution text after regexp       |
+| regsub     | regexp       | substitution text after regexp       |
 | number     | (normal/idle)| number literals                      |
 | keyword    | (normal/idle)| keywords                             |
 | other      | keyword      | names matching "other" keyword descr.|
 | function   | (normal/idle)| names which appear to be functions   |
 | variable   | (normal/idle)| any other name                       |
-| prep       | (normal/idle)| preprocessor directives              |
-| prepquote  | (normal/idle)| filenames in preprocessor directives |
+| prep       | keyword      | preprocessor directives              |
+| prepquote  | string       | filenames in preprocessor directives |
 | doc        | (normal/idle)| embedded documentation               |
 | docmarkup  | doc          | markup lines in embedded docs        |
 | docindent  | doc          | embedded doc lines that are indented |
@@ -1794,7 +1794,7 @@ These are:
 |------------^--------------^--------------------------------------|
 | In "normal" and "syntax" display modes...                        |
 | specialkey | (normal/idle)| control characters if <a href="elvisopt.html#list">list</a> is on     |
-| nontext    | specialkey   | end-of-line marker if <a href="elvisopt.html#list">list</a> is on     |
+| nontext    | normal       | end-of-line marker if <a href="elvisopt.html#list">list</a> is on     |
 | extends    | specialkey   | side-scrolling arrows if <a href="elvisopt.html#wrap">wrap</a> is off |
 |------------^--------------^--------------------------------------|
 |In the "hex" display mode...                                      |
@@ -1807,6 +1807,7 @@ These are:
 | bold       | formatted    | boldface text                        |
 | italic     | formatted    | italic text                          |
 | underlined | formatted    | underlined text                      |
+| emphasized | bold         | emphasized text                      |
 | fixed      | formatted    | fixed-pitch text                     |
 | link       | formatted    | HTML hypertext reference             |
 | definition | bold         | definition of a term within text     |
@@ -1952,6 +1953,9 @@ For example, ":color x underlined|color y like x bold", will cause the
 <p>Some user interfaces may not be able to display all of these attributes.
 And even if the user interface can display them all individually, it may not
 be able to display all possible combinations.
+
+<p>The termcap user interface uses the "dim" attribute (half-bright) for the
+<strong>italic</strong> attribute.
 
 <p>The <strong>boxed</strong> attribute attempts to draw a box around the text;
 for some user interfaces, or when printing to some types of printers, the
@@ -2145,7 +2149,7 @@ Elvis will set both the current and default values of the option,
 and mark the option has having <em>not</em> been changed.
 This is used in some of Elvis' initialization scripts.
 
-<dt><a name="alias">al[ias]</a><code>[</code>!<code>]</code> <code>[</code><var>name</var> <code>[</code><var>excmds</var><code>]]</code>
+<dt><a name="alias">ali[as]</a><code>[</code>!<code>]</code> <code>[</code><var>name</var> <code>[</code><var>excmds</var><code>]]</code>
 <dd>The <code>:alias</code> command manipulates the alias list.
 (See the <a href="elvistip.html#ALIAS">Tips</a> section of the manual for
 a discussion of aliases.)
@@ -3007,13 +3011,14 @@ by a '}' on a line by itself.
 |ADDRESS| COMMAND           | ARGUMENTS                         |
 |-------|-------------------|-----------------------------------|
 |       | <a href="#abbreviate">ab[breviate]</a>[!]   | [lhs rhs]                         |
-|       | <a href="#alias">al[ias]</a>           | [name [excmds]]                   |
+|       | <a href="#alias">ali[as]</a>           | [name [excmds]]                   |
 |       | <a href="#all">al[l]</a>[!]          | excmds                            |
 | line  | <a href="#append">a[ppend]</a>[!]       | [text]                            |
 |       | <a href="#args">ar[gs]</a>            | [file...]                         |
+|       | <a href="#auevent">aue[vent]</a>[!]      | [event] ...                       |
 |       | <a href="#augroup">aug[roup]</a>[!]      | [group]                           |
 |       | <a href="#autocmd">au[tocmd]</a>[!]      | [group] [events [file [excmd]]]   |
-|       | <a href="#bbrowse">bb[rowse]</a>         |                                   |
+|       | <a href="#bbrowse">bb[rowse]</a>[!]      |                                   |
 |       | <a href="#break">bre[ak]</a>[!]        | [flags] lhs                       |
 |       | <a href="#browse">br[owse]</a>[!]       | restrictions                      |
 |       | <a href="#buffer">b[uffer]</a>[!]       | [buffer]                          |
@@ -3032,11 +3037,11 @@ by a '}' on a line by itself.
 | range | <a href="#delete">d[elete]</a>          | [cutbuf] [count]                  |
 |       | <a href="#digraph">dig[raph]</a>[!]      | [lhs [rhs]]                       |
 |       | <a href="#display">di[splay]</a>         | [modename [language]]             |
+|       | <a href="#doautocmd">doa[utocmd]</a>       | [group] event [file]              |
 |       | <a href="#doloop">do[loop]</a>          | excmds                            |
 |       | <a href="#echo">ec[ho]</a>            | text                              |
 |       | <a href="#edit">e[dit]</a>[!]         | [+line] [file]                    |
 |       | <a href="#else">el[se]</a>            | excmds                            |
-| range | <a href="#nofold">nof[old]</a>[!]       |                                   |
 |       | <a href="#errlist">er[rlist]</a>[!]      | [file]                            |
 |       | <a href="#error">erro[r]</a>           | text                              |
 |       | <a href="#eval">ev[al]</a>            | expr                              |
@@ -3066,6 +3071,7 @@ by a '}' on a line by itself.
 |       | <a href="#new">new</a>               |                                   |
 |       | <a href="#next">n[ext]</a>[!]         | [file...]                         |
 |       | <a href="#Next">N[ext]</a>[!]         |                                   |
+| range | <a href="#nofold">nof[old]</a>[!]       |                                   |
 |       | <a href="#nohlsearch">noh[lsearch]</a>      |                                   |
 | range | <a href="#normal">norm[al]</a>[!]       | keystrokes                        |
 | range | <a href="#number">nu[mber]</a>          | [count]                           |
@@ -3087,8 +3093,8 @@ by a '}' on a line by itself.
 |       | <a href="#sNext">sN[ext]</a>           |                                   |
 |       | <a href="#safely">safel[y]</a>[!        | excmds                            |
 |       | <a href="#sall">sa[ll]</a>            |                                   |
-|       | <a href="#sbbrowse">sbb[rowse]</a>        |                                   |
-|       | <a href="#sbrowse">sb[rowse]</a>         | restrictions                      |
+|       | <a href="#sbbrowse">sbb[rowse]</a>[!]     |                                   |
+|       | <a href="#sbrowse">sbr[owse]</a>         | restrictions                      |
 |       | <a href="#set">se[t]</a>[!]          | [option=value | option? | all]    |
 |       | <a href="#shell">sh[ell]</a>           |                                   |
 |       | <a href="#slast">sl[ast]</a>           |                                   |
@@ -3135,7 +3141,7 @@ by a '}' on a line by itself.
 |       | <a href="#OPEN">(</a>                 | buffer                            |
 | range | <a href="#LT">&lt;</a>                 |                                   |
 | range | <a href="#EQ">=</a>                 |                                   |
-| range | <a href="#GT">&gt;</a>                 |                                   |
+| range | <a href="#GT">&gt;</a>[!]              |                                   |
 |       | <a href="#AT">@</a>                 | cutbuf                            |
 |       | <a href="#OCUR">{</a>                 |                                   |
 | range | <a href="#TILDE">~</a>                 |                                   |

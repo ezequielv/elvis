@@ -1219,7 +1219,7 @@ This option is false by default.
 <dd>The <em>showmode</em> option causes Elvis to
 display a one-word label for its current parse state in the lower right-hand
 corner of the window.
-Usually, this will be either "Command" or "Input".
+Usually, this will be either "Command", "Input" or "Replace".
 This option is true by default.
 
 <dt><a name="nonascii">nonascii, asc <em>(One-Of, global)</em></a>
@@ -1581,7 +1581,7 @@ without setting a background color, you can simply set the background to
 <dt><a name="ttyitalic">ttyitalic, ttyi <em>(Boolean, termcap)</em></a>
 <dd>Elvis normally displays italic text using the "dim" attribute, but
 standard PC VGA hardware can't do that very well.
-The Linux console driver implements it by using gray, which is unfortunate
+The Linux console driver implements "dim" by using gray, which is unfortunate
 if you want to mix colors and italics.
 The <em>ttyitalic</em> option gives you a way to disable this,
 so you can see colors on the screen, while still allowing the
@@ -1767,7 +1767,12 @@ Since programmers like to see as many lines of their code as possible,
 I decided to create this option for trimming down gap.
 The default value is 4, which reduces the height of each text row by
 4 raster lines.
-You can set it to any value from 0 to 10.
+A negative value will add extra whitespace between the lines, which may serve
+two purposes: if a font has descenders that don't show for aasqueeze=0, like
+the '_' character, setting aasqueeze to -2 might make it visible. The other
+purpose might be simulating double line-height in presentations by choosing
+a high negative value like aasqueeze=-10
+You can set it to any value from -10 to 10.
 
 <dt><a name="scrollbarleft">scrollbarleft, xsl <em>(Boolean, x11)</em></a>
 <dd>The <em>scrollbarleft</em> option determines which side of the window the
